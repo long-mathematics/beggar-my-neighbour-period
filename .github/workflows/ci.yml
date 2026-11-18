@@ -13,6 +13,8 @@ jobs:
           python-version: '3.13'
       - name: Install verifier dependency
         run: python -m pip install -r requirements.txt
+      - name: Cross-check Casella et al. published infinite game
+        run: python check_published_rules.py --json verification/ci_reference_rules.json
       - name: Check lower bound and 6-cycle
         run: python prove_minimum.py --json verification/ci_minimum.json
       - name: Check structural assertions
