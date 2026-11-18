@@ -1,0 +1,32 @@
+name: Proof and paper
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install verifier dependency
+        run: python -m pip install -r requirements.txt
+      - name: Check lower bound and 6-cycle
+        run: python prove_minimum.py --json verification/ci_minimum.json
+      - name: Check structural assertions
+        run: python prove_minimum.py --structural --json verification/ci_structural.json
+      - name: Check backward component
+        run: python backward_component.py --json verification/ci_backward.json
+      - name: Check rigidity certificate
+        run: python check_rigidity.py --json verification/ci_rigidity.json
+      - name: Compile paper
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y latexmk texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra
+          latexmk -pdf -interaction=nonstopmode -halt-on-error minimum_period.tex
+      - uses: actions/upload-artifact@v4
+        with:
+          name: beggar-minimum-period-paper
+          path: minimum_period.pdf

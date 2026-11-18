@@ -1,0 +1,35 @@
+{
+  "native_z3": "4.13.3.0",
+  "method": "existing exact gap model + native C API SMT-LIB solving",
+  "periods": [
+    {
+      "period": 2,
+      "skeletons": 2,
+      "represented_rank_assignments": 48,
+      "all_unsat": true,
+      "seconds": 0.063
+    },
+    {
+      "period": 3,
+      "skeletons": 10,
+      "represented_rank_assignments": 288,
+      "all_unsat": true,
+      "seconds": 0.042
+    },
+    {
+      "period": 4,
+      "skeletons": 163,
+      "represented_rank_assignments": 20328,
+      "all_unsat": true,
+      "seconds": 0.981
+    },
+    {
+      "period": 5,
+      "skeletons": 1026,
+      "represented_rank_assignments": 134592,
+      "all_unsat": true,
+      "seconds": 6.749
+    }
+  ],
+  "elapsed_seconds": 7.836
+}

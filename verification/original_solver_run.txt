@@ -1,0 +1,38 @@
+One trick is impossible: its loser strictly loses cards.
+p=2: 2 skeletons, 48 rank assignments; ALL UNSAT (0.07s).
+p=3: 10 skeletons, 288 rank assignments; ALL UNSAT (0.06s).
+p=4: 163 skeletons, 20,328 rank assignments; ALL UNSAT (1.28s).
+p=5: 1,026 skeletons, 134,592 rank assignments; ALL UNSAT (10.95s).
+
+Six-trick witness: A leads; queue fronts are at the left.
+A: KCACCCCCQCCCQCACCCQKCACCCCCQCC
+B: CJCKCJCCAKCCCCCJCCCCJC
+Trick 1: A:K B:C B:J A:C; pile KCJC; winner B.
+  A=ACCCCCQCCCQCACCCQKCACCCCCQCC; B=CKCJCCAKCCCCCJCCCCJCKCJC
+Trick 2: B:C A:A B:K A:C A:C A:C; pile CAKCCC; winner B.
+  A=CCQCCCQCACCCQKCACCCCCQCC; B=CJCCAKCCCCCJCCCCJCKCJCCAKCCC
+Trick 3: B:C A:C B:J A:C; pile CCJC; winner B.
+  A=QCCCQCACCCQKCACCCCCQCC; B=CCAKCCCCCJCCCCJCKCJCCAKCCCCCJC
+Trick 4: B:C A:Q B:C B:A A:C A:C A:C A:Q B:K A:C A:A B:C B:C B:C B:C; pile CQCACCCQKCACCCC; winner A.
+  A=CCCQKCACCCCCQCCCQCACCCQKCACCCC; B=CJCCCCJCKCJCCAKCCCCCJC
+Trick 5: A:C B:C A:C B:J A:C; pile CCCJC; winner B.
+  A=QKCACCCCCQCCCQCACCCQKCACCCC; B=CCCCJCKCJCCAKCCCCCJCCCCJC
+Trick 6: B:C A:Q B:C B:C; pile CQCC; winner A.
+  A=KCACCCCCQCCCQCACCCQKCACCCCCQCC; B=CJCKCJCCAKCCCCCJCCCCJC
+
+VERIFIED: minimum p over all nonempty splits is 6; this cycle uses 38 individual card plays.
+A balanced deal enters this cycle after A plays an ace and B pays four ordinary cards:
+  A=ACCCQKCACCCCCQCCCQCACCCQKC
+  B=CCCCCJCCCCJCKCJCCAKCCCCCJC; A leads.
+Structural p=2: 2 skeletons; 0 feasible with unrestricted C count.
+Structural p=3: 10 skeletons; 0 feasible with unrestricted C count.
+Structural p=4: 163 skeletons; 1 feasible with unrestricted C count.
+Structural p=5: 1,026 skeletons; 0 feasible with unrestricted C count.
+Structural p=4: C counts are exactly 104+31*n, n>=0; necessity and symbolic converse VERIFIED.
+PASS: all 24 rank assignments and 17 parameter values checked (408 cases).
+Return system rank 17; 21 nonnegative integral candidates; 1 legal realization.
+Unique ranks (x,y,z,w)=(K,A,Q,J), u=4, ordinary cards=36.
+Primitive rank period=6 tricks; individual plays=38; initial split=30/22.
+A: KCACCCCCQCCCQCACCCQKCACCCCCQCC
+B: CJCKCJCCAKCCCCCJCCCCJC
+Certificate written to minimum_deliverables/rigidity_verification.json

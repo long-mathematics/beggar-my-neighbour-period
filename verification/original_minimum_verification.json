@@ -1,0 +1,314 @@
+{
+  "z3_version": "5.4.1",
+  "ordinary_cards": 36,
+  "special_rank_multiplicities": [
+    4,
+    4,
+    4,
+    4
+  ],
+  "lower_bound_checks": [
+    {
+      "period": 2,
+      "skeletons": 2,
+      "represented_rank_assignments": 48,
+      "all_unsat": true,
+      "seconds": 0.06817905700017945
+    },
+    {
+      "period": 3,
+      "skeletons": 10,
+      "represented_rank_assignments": 288,
+      "all_unsat": true,
+      "seconds": 0.059340733000226464
+    },
+    {
+      "period": 4,
+      "skeletons": 163,
+      "represented_rank_assignments": 20328,
+      "all_unsat": true,
+      "seconds": 1.2773614789998646
+    },
+    {
+      "period": 5,
+      "skeletons": 1026,
+      "represented_rank_assignments": 134592,
+      "all_unsat": true,
+      "seconds": 10.948527544999706
+    }
+  ],
+  "witness": {
+    "A": "KCACCCCCQCCCQCACCCQKCACCCCCQCC",
+    "B": "CJCKCJCCAKCCCCCJCCCCJC",
+    "leader": "A",
+    "split": [
+      30,
+      22
+    ],
+    "least_trick_period": 6,
+    "card_plays_per_period": 38,
+    "trace": [
+      {
+        "trick": 1,
+        "A_before": "KCACCCCCQCCCQCACCCQKCACCCCCQCC",
+        "B_before": "CJCKCJCCAKCCCCCJCCCCJC",
+        "leader": "A",
+        "plays": [
+          [
+            "A",
+            "K"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "B",
+            "J"
+          ],
+          [
+            "A",
+            "C"
+          ]
+        ],
+        "pile": "KCJC",
+        "winner": "B",
+        "A_after": "ACCCCCQCCCQCACCCQKCACCCCCQCC",
+        "B_after": "CKCJCCAKCCCCCJCCCCJCKCJC"
+      },
+      {
+        "trick": 2,
+        "A_before": "ACCCCCQCCCQCACCCQKCACCCCCQCC",
+        "B_before": "CKCJCCAKCCCCCJCCCCJCKCJC",
+        "leader": "B",
+        "plays": [
+          [
+            "B",
+            "C"
+          ],
+          [
+            "A",
+            "A"
+          ],
+          [
+            "B",
+            "K"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "C"
+          ]
+        ],
+        "pile": "CAKCCC",
+        "winner": "B",
+        "A_after": "CCQCCCQCACCCQKCACCCCCQCC",
+        "B_after": "CJCCAKCCCCCJCCCCJCKCJCCAKCCC"
+      },
+      {
+        "trick": 3,
+        "A_before": "CCQCCCQCACCCQKCACCCCCQCC",
+        "B_before": "CJCCAKCCCCCJCCCCJCKCJCCAKCCC",
+        "leader": "B",
+        "plays": [
+          [
+            "B",
+            "C"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "B",
+            "J"
+          ],
+          [
+            "A",
+            "C"
+          ]
+        ],
+        "pile": "CCJC",
+        "winner": "B",
+        "A_after": "QCCCQCACCCQKCACCCCCQCC",
+        "B_after": "CCAKCCCCCJCCCCJCKCJCCAKCCCCCJC"
+      },
+      {
+        "trick": 4,
+        "A_before": "QCCCQCACCCQKCACCCCCQCC",
+        "B_before": "CCAKCCCCCJCCCCJCKCJCCAKCCCCCJC",
+        "leader": "B",
+        "plays": [
+          [
+            "B",
+            "C"
+          ],
+          [
+            "A",
+            "Q"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "B",
+            "A"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "Q"
+          ],
+          [
+            "B",
+            "K"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "A"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "B",
+            "C"
+          ]
+        ],
+        "pile": "CQCACCCQKCACCCC",
+        "winner": "A",
+        "A_after": "CCCQKCACCCCCQCCCQCACCCQKCACCCC",
+        "B_after": "CJCCCCJCKCJCCAKCCCCCJC"
+      },
+      {
+        "trick": 5,
+        "A_before": "CCCQKCACCCCCQCCCQCACCCQKCACCCC",
+        "B_before": "CJCCCCJCKCJCCAKCCCCCJC",
+        "leader": "A",
+        "plays": [
+          [
+            "A",
+            "C"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "B",
+            "J"
+          ],
+          [
+            "A",
+            "C"
+          ]
+        ],
+        "pile": "CCCJC",
+        "winner": "B",
+        "A_after": "QKCACCCCCQCCCQCACCCQKCACCCC",
+        "B_after": "CCCCJCKCJCCAKCCCCCJCCCCJC"
+      },
+      {
+        "trick": 6,
+        "A_before": "QKCACCCCCQCCCQCACCCQKCACCCC",
+        "B_before": "CCCCJCKCJCCAKCCCCCJCCCCJC",
+        "leader": "B",
+        "plays": [
+          [
+            "B",
+            "C"
+          ],
+          [
+            "A",
+            "Q"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "B",
+            "C"
+          ]
+        ],
+        "pile": "CQCC",
+        "winner": "A",
+        "A_after": "KCACCCCCQCCCQCACCCQKCACCCCCQCC",
+        "B_after": "CJCKCJCCAKCCCCCJCCCCJC"
+      }
+    ]
+  },
+  "balanced_entry": {
+    "A": "ACCCQKCACCCCCQCCCQCACCCQKC",
+    "B": "CCCCCJCCCCJCKCJCCAKCCCCCJC",
+    "leader": "A",
+    "split": [
+      26,
+      26
+    ],
+    "transient_tricks": 1,
+    "eventual_least_trick_period": 6,
+    "entry_pile": "ACCCC",
+    "enters_after_displayed_trick": 4
+  },
+  "minimum_completed_trick_rank_period": 6,
+  "structural_checks": {
+    "2": {
+      "skeletons": 2,
+      "feasible_skeletons_with_any_C_count": 0
+    },
+    "3": {
+      "skeletons": 10,
+      "feasible_skeletons_with_any_C_count": 0
+    },
+    "4": {
+      "skeletons": 163,
+      "feasible_skeletons_with_any_C_count": 1
+    },
+    "5": {
+      "skeletons": 1026,
+      "feasible_skeletons_with_any_C_count": 0
+    },
+    "four_trick_ordinary_counts": {
+      "formula": "104 + 31*n",
+      "n": "every integer >= 0",
+      "necessity_and_sufficiency_verified": true
+    }
+  }
+}

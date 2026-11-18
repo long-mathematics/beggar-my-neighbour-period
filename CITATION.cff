@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: If you use the results or code in this project, please cite the accompanying manuscript.
+title: The Minimum Trick Period in Beggar-My-Neighbour Is Six
+type: manuscript
+authors:
+  - family-names: Long
+    given-names: Christopher D.
+date-released: 2026-11-18
+license: MIT
