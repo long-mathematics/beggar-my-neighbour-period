@@ -37,6 +37,24 @@ A rank state identifies all ordinary cards and identifies copies of the same
 face rank. The physical-card labelled period of this witness is 2,376 tricks,
 which is a separate concept and is **not** claimed minimal.
 
+## Published-rule regression
+
+`check_published_rules.py` independently simulates the published balanced
+52-card deal of Casella et al. (2025), using the same rank-only rules. It
+recovers precisely **4 transient tricks**, a **62-trick primitive cycle**,
+**66 tricks** to first return, and **474 individual card plays** to that
+return. This cross-check helps detect a reversed pickup pile, incorrect
+challenge interruption, or wrong next-leader convention.
+
+Run without any third-party dependencies:
+
+```bash
+python3 check_published_rules.py --json verification/casella_rule_crosscheck.json
+```
+
+This regression checks the game rules and published reference witness;
+it does not independently prove the exhaustive minimum-period reduction.
+
 ## Proof and reproducibility
 
 The lower bound enumerates all legal face-card itineraries for periods 2–5 and
