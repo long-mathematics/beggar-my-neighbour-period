@@ -1,9 +1,9 @@
 cff-version: 1.2.0
 message: If you use the results or code in this project, please cite the accompanying manuscript.
-title: "The minimum trick period in Beggar-My-Neighbour is six: classification and uniqueness of the optimal cycle"
+title: "The unique shortest rank-state cycle in Beggar-My-Neighbour: six tricks and 38 individual plays"
 type: manuscript
 authors:
   - family-names: Long
     given-names: Christopher D.
-date-released: 2026-11-18
+date-released: 2026-11-19
 license: MIT

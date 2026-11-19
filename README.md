@@ -1,10 +1,15 @@
-# The minimum trick period in Beggar-My-Neighbour
+# The unique shortest cycle in Beggar-My-Neighbour
 
-**Result:** Under chronological pickup and winner-led play, the least primitive
-*completed-trick* period of a rank-state cycle using the standard 52-card
-inventory is **six**, and **exactly one such orbit exists up to cyclic phase and player exchange**.
-A balanced 26–26 deal enters the cycle after one trick. The six-trick return is hand-checkable, while its optimality uses an
-exhaustive integer-constraint search.
+**Result:** Under chronological pickup and winner-led play, the minimum
+rank-state period for the standard 52-card inventory is **six completed tricks**
+or **38 individual card plays**. The same cycle is the unique minimizer of
+both quantities, up to cyclic phase and exchange of the players.
+
+In particular, **every cycle using at most 38 plays is the displayed six-trick
+cycle**, allowing every trick count and every nonempty hand split. A balanced
+26–26 deal enters it after one trick. The global exclusions are exhaustive
+computer-assisted proofs; the surviving pattern's rigidity also has a short
+modular-arithmetic proof.
 
 **Paper:** [minimum_period.pdf](minimum_period.pdf) · [LaTeX source](minimum_period.tex)
 
@@ -37,14 +42,129 @@ A rank state identifies all ordinary cards and identifies copies of the same
 face rank. The physical-card labelled period of this witness is 2,376 tricks,
 which is a separate concept and is **not** claimed minimal.
 
+## Global 38-play minimum and uniqueness
+
+If a cycle has `p` tricks and `c` changes of winner in its cyclic winner word,
+then `L >= 2p + c >= 2p + 2`. A completed trick uses at least two plays; a
+two-play trick is the leader's jack followed by an ordinary card, so every
+change of winner needs at least three. Both players must win during a cycle.
+Consequently **at most 38 plays means at most 18 tricks**. A one-trick return
+is impossible.
+
+Two separately implemented C++ enumerators cover every face itinerary for
+periods 2–18 and every initial face split. They agree on the complete sets
+of **43,808 candidates** retained by the necessary play-budget bounds.
+The exact model assigns all face ranks and all 18 ordinary gaps, enforces
+the standard inventory and every payment, and requires the queues and
+leader to return with at most 38 plays.
+
+| Completed tricks | Candidate face itineraries | Feasible itineraries | Rank/gap models |
+|---:|---:|---:|---:|
+| 2 | 2 | 0 | 0 |
+| 3 | 10 | 0 | 0 |
+| 4 | 145 | 0 | 0 |
+| 5 | 565 | 0 | 0 |
+| 6 | 4,234 | 1 | 1 |
+| 7 | 7,119 | 0 | 0 |
+| 8 | 13,140 | 0 | 0 |
+| 9 | 8,530 | 0 | 0 |
+| 10 | 5,178 | 0 | 0 |
+| 11 | 3,340 | 0 | 0 |
+| 12 | 1,340 | 0 | 0 |
+| 13 | 166 | 0 | 0 |
+| 14 | 35 | 0 | 0 |
+| 15 | 4 | 0 | 0 |
+| 16 | 0 | 0 | 0 |
+| 17 | 0 | 0 | 0 |
+| 18 | 0 | 0 | 0 |
+| **Total** | **43,808** | **1** | **1** |
+
+For every satisfiable itinerary, the verifier enumerates all models by
+blocking every gap and every face-orbit rank, continuing until `unsat`.
+The sole feasible case has **22 essential variables: 18 gaps and four orbit
+ranks**. Its only model is the witness above, with exactly 38 plays; the
+complete blocking query is unsatisfiable. Thus this classification proves
+both the minimum and its uniqueness. Any `unknown` result is an error.
+
+Install the Python dependency and verify the complete archived candidate set:
+
+```bash
+python3 -m pip install -r requirements.txt
+make verify-plays
+```
+
+Regenerate both complete candidate sets with a C++20 compiler, compare every
+candidate, and perform the full classification:
+
+```bash
+make crosscheck-plays
+```
+
+The corresponding standalone command is:
+
+```bash
+python3 verify_unique38.py --crosscheck --workers 2 \
+    --json verification/play_period/fresh_crosscheck.json
+```
+
+The sources are [`bounded_play_skeletons.cpp`](bounded_play_skeletons.cpp),
+[`independent_play_skeletons.cpp`](independent_play_skeletons.cpp), and
+[`verify_unique38.py`](verify_unique38.py). The verifier uses the same exact
+gap model and direct simulators as the earlier trick-period proof, with an
+exact individual-play counter. The complete compressed input is
+[`play_candidates_le38.tsv.gz`](play_candidates_le38.tsv.gz); reports and
+the positive/blocked SMT queries are under
+[`verification/play_period/`](verification/play_period/).
+
+The positive and blocked queries can also be checked through the native Z3
+C interface, without Python Z3 bindings:
+
+```bash
+python3 check_play_queries.py \
+    --json verification/play_period/native_query_fresh.json
+```
+
+This requires an installed Z3 shared library. To check queries from a fresh
+classification, add `--classification verification/play_period/fresh_crosscheck.json`.
+The checker verifies their hashes against that report and requires `sat` for
+the positive query and `unsat` after blocking all 22 variables. This additional
+check covers the surviving case; the full global exclusion is performed by
+`verify_unique38.py`.
+
+### Elementary rigidity of the surviving pattern
+
+After deleting ordinary cards, the unique feasible face pattern is
+`xyzzyzxyz` in A and `wxwyxww` in B. Its four face-permutation orbits each
+have length four, so `(x,y,z,w)` permutes `(1,2,3,4)`. The gap-return system
+has rank 17 with sole free gap `u = b6`. Adding its affine solutions gives
+
+```math
+12N_C = 115u + 34x + 2y - 100z + 125w - 63.
+```
+
+The standard ordinary count `N_C = 36` and rank sum `x+y+z+w = 10` imply
+`-24x + 8y - 5z = 65 (mod 115)`. The left side lies in `[-108,3]`, so it
+equals `-50`. Hence `24x - 8y + 5z = 50`; reduction modulo eight gives
+`z=2`, then distinctness forces `x=3`, `y=4`, `w=1`, and `u=4`.
+All eighteen gaps are therefore uniquely determined.
+
+The separate checker derives the return equations by symbolic FIFO transport,
+verifies their rank and affine formulas with exact rational arithmetic, and
+checks the congruence and direct play. It needs only Python's standard library:
+
+```bash
+python3 check_algebraic_rigidity.py \
+    --json verification/play_period/algebraic_rigidity.json
+```
+
 ## Complete classification of six-trick cycles
 
 **The six-trick rank-state cycle is unique up to the rotation of its six
 completed tricks and exchange of the two players.** With player names fixed,
 there are exactly **two** oriented cycles, each with six boundary states,
 exchanged by swapping A and B. The unique equivalence class uses 38 individual
-card plays per period. This is **not** a claim that 38 plays is globally minimal
-when cycles of more than six tricks are allowed.
+card plays per period. The separate global classification above shows that
+this is also the unique shortest cycle when all trick counts are allowed.
 
 The computer-assisted classification first enumerates every possible face-only
 itinerary with the same cyclic/relabeling reductions used in the lower-bound
@@ -124,7 +244,7 @@ balanced predecessors (19 for each next leader):
 python3 verify_orbit_symmetry.py --json verification/orbit_symmetry_verification.json
 ```
 
-## Proof and reproducibility
+## Earlier trick-period proof and additional structure
 
 The lower bound enumerates all legal face-card itineraries for periods 2–5 and
 solves their complete integer ordinary-gap constraints (18 gaps, 36 ordinary
@@ -181,19 +301,23 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error minimum_period.tex
 ```
 
 The compiled PDF is committed as a first-class file for convenient reading.
-Continuous integration independently builds the paper and reruns the checks.
+Continuous integration builds the paper, reruns the earlier checks, and
+regenerates both complete candidate sets for the global play-period proof.
 
 ## Scope
 
-The optimality claim is about primitive periods in **completed tricks**, for
-a **standard 52-card inventory**, allowing any nonempty split. It also applies
-to the minimum *eventual* primitive period reachable from a 26–26 split.
+The optimality claims concern primitive rank-state periods measured in
+**completed tricks** and **individual card plays**, for the **standard
+52-card inventory**, allowing any nonempty split. The minima are six tricks
+and 38 plays, and their unique attaining orbit is the same. They also apply
+to the minimum eventual periods reachable from a 26–26 split.
 
-It does **not** establish the smallest number of individual card plays among
-cycles of *all* possible trick periods, or the minimum period when all 52
-physical cards are distinguished. The minimum-period and classification
-proofs are computer-assisted; no formally verified proof-assistant
-certificate is claimed.
+With player names fixed, there are two oriented cycles, each containing six
+completed-trick boundary states. The global exclusion is computer-assisted;
+the surviving pattern's rigidity has the elementary arithmetic proof above.
+No proof-assistant formalization or independently checked solver proof trace
+is claimed. The minimum period with all 52 physical cards distinguished
+remains a separate question.
 
 The paper also proves that, fixing a finite special-card inventory and period,
 the possible ordinary-card counts form an effectively semilinear set; it
