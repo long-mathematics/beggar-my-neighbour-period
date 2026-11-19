@@ -11,3 +11,7 @@ __pycache__/
 *.blg
 .pytest_cache/
 .venv/
+
+# Local generated executable and temporary output
+/skeleton6
+/skeleton6_new.tsv

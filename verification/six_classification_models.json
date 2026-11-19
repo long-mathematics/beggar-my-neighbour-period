@@ -1,0 +1,61 @@
+{
+  "feasible_skeleton_index": 2674,
+  "number_of_rank_and_gap_solutions": 1,
+  "blocked_second_model_unsat": true,
+  "unique_hands": {
+    "A": "KCACCCCCQCCCQCACCCQKCACCCCCQCC",
+    "B": "CJCKCJCCAKCCCCCJCCCCJC",
+    "leader": "A"
+  },
+  "face_permutation_orbits": [
+    [
+      0,
+      6,
+      13,
+      10
+    ],
+    [
+      1,
+      7,
+      4,
+      12
+    ],
+    [
+      2,
+      8,
+      5,
+      3
+    ],
+    [
+      9,
+      15,
+      14,
+      11
+    ]
+  ],
+  "model": {
+    "gap_0": 0,
+    "gap_1": 1,
+    "gap_2": 5,
+    "gap_3": 3,
+    "gap_4": 1,
+    "gap_5": 3,
+    "gap_6": 0,
+    "gap_7": 1,
+    "gap_8": 5,
+    "gap_9": 2,
+    "gap_10": 1,
+    "gap_11": 1,
+    "gap_12": 1,
+    "gap_13": 2,
+    "gap_14": 0,
+    "gap_15": 5,
+    "gap_16": 4,
+    "gap_17": 1,
+    "rank_0": 3,
+    "rank_1": 4,
+    "rank_2": 2,
+    "rank_3": 1
+  },
+  "native_z3_version": "4.13.3.0"
+}

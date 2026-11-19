@@ -1,0 +1,28 @@
+{
+  "face_skeletons": 21407,
+  "rank_colorings_represented": 2688096,
+  "skeleton_counts_by_winner": {
+    "111110": 199,
+    "111100": 2361,
+    "111010": 2121,
+    "111000": 5286,
+    "110110": 2489,
+    "110100": 4293,
+    "101010": 4658
+  },
+  "satisfiable_skeletons": [
+    {
+      "index": 2674,
+      "line": "9 111010 2 2 1 5 1 1 6 7 8 2 12 3 13 4 5 15 0 9 1 10 11 14"
+    }
+  ],
+  "number_of_six_trick_equivalence_classes": 1,
+  "oriented_orbits_with_named_players": 2,
+  "distinct_periodic_rank_states": 12,
+  "card_plays_per_period": 38,
+  "balanced_backward_states_per_orbit": 19,
+  "all_exact_python_cpp_crosschecks_passed": true,
+  "skeleton_sha256": "54208543e5fbcd03f95e45c26d7b83406997278012fec115d0e80c2a4e25ddc5",
+  "native_z3_version": "4.13.3.0",
+  "proof_status": "exhaustive computer-assisted classification; not formally verified"
+}

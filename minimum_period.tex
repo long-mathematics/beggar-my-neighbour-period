@@ -15,7 +15,7 @@
 \setlength{\parskip}{5pt}
 \setlength{\parindent}{0pt}
 \emergencystretch=2em
-\title{The minimum trick period in\newline Beggar-My-Neighbour is six}
+\title{The minimum trick period in Beggar-My-Neighbour is six\\\large Classification and uniqueness of the optimal cycle}
 \author{Christopher D. Long}
 \date{18 November 2026}
 \begin{document}
@@ -29,9 +29,12 @@ identifying cards with the same game behaviour, is six. An explicit cycle uses
 enters it after one trick, and the cycle has 181 backward-reachable rank
 states, including 19 balanced starts. The upper bound has a short, directly checkable word
 certificate. The lower bound reduces all possible periods below six to 1,201
-face-card itineraries, followed by exact integer gap feasibility. We also give
-an exact classification of the possible deck sizes for period four and explain
-why fixed-period deck-size sets are semilinear.
+face-card itineraries, followed by exact integer gap feasibility. For period
+six, the corresponding 21,407 face-card itineraries yield exactly one
+feasible skeleton, with a unique rank-and-gap realization. Thus the displayed
+cycle is the only six-trick rank-state cycle, up to cyclic phase and exchange
+of players. We also classify period-four deck sizes and prove fixed-period
+deck-size sets are semilinear.
 \end{abstract}
 
 \section{Introduction and conventions}
@@ -45,7 +48,8 @@ anti-Hilbert problem. More recent computational and dynamical investigations
 include Andorno et al.~\cite{andorno}. The aim here is different: to minimize
 the primitive cycle period, under the same deterministic rules and standard
 deck inventory. The construction and lower-bound computation described below
-show that the minimum is six tricks. We distinguish a cycle's primitive period
+show that the minimum is six tricks. A further exhaustive calculation
+classifies every optimal orbit and proves its uniqueness up to symmetry. We distinguish a cycle's primitive period
 from the transient needed to enter it and from a period that tracks the suits
 or physical identities of all cards.
 
@@ -73,7 +77,9 @@ For inventory $\CC^{36}\JJ^4\QQ^4\KK^4\AA^4$,
 \boxed{\min_{s\text{ periodic}}\operatorname{per}(s)=6.}
 \]
 The minimum is attained by a $30$--$22$ state. It is also the minimum possible
-eventual period of an infinite game begun with a $26$--$26$ deal.
+eventual period of an infinite game begun with a $26$--$26$ deal. Moreover,
+all six-trick rank-state cycles are equivalent to the displayed example by
+cyclic time shift and exchange of the two players.
 \end{theorem}
 
 The lower bound below is a computer-assisted exhaustive proof using integer
@@ -461,8 +467,107 @@ g_B={}&(1+8n,1+10n,1+3n,2+10n,\\
 \]
 Their total ordinary count is $36+115n$. Already the first trick requires
 B's jack to interrupt A's king after $b_0-a_0=1+3n$ ordinary cards. Thus
-$1+3n<3$, forcing $n=0$. This uniqueness is specific to this itinerary; it
-is not a classification of all six-trick cycles.
+$1+3n<3$, forcing $n=0$. This rational calculation certifies uniqueness for the one face-card
+itinerary considered here. The next section shows that no other six-trick
+itinerary admits any legal standard-deck realization.
+
+\section{Complete classification of the six-trick cycles}
+
+We now complete the period-six classification rather than merely exhibiting
+one cycle. The equivalence relation identifies cyclic shifts of the trick
+boundary and the exchange of players A and B. We continue to identify equal
+face ranks and ordinary cards. Distinguishing the physical card labels gives
+a different periodicity problem; it is not the convention used here.
+
+\begin{theorem}[Uniqueness of the optimal rank-state cycle]
+For the standard inventory $\CC^{36}\JJ^4\QQ^4\KK^4\AA^4$,
+there is, up to cyclic time shift and exchange of the two players,
+\emph{exactly one} primitive six-trick cycle. Its pile lengths are
+$4,6,4,15,5,4$, totaling 38 individual plays. With player names fixed,
+there are exactly two distinct oriented periodic orbits (each containing
+six rank states); they are exchanged by interchanging A and B. Neither
+periodic orbit contains a $26$--$26$ boundary, although both are accessible
+from balanced deals.
+\end{theorem}
+
+\begin{proof}[Computer-assisted proof]
+By the face-only reduction established above, choose a winner word up to
+cyclic rotation and player exchange, with the last winner A (hence the
+initial leader A). There are exactly seven such length-six words.
+For each word enumerate the transfer values $0\le k_i\le7$, parity
+bits $e_i\in\{0,1\}$ with $1\le 2k_i+e_i\le15$, balanced net face
+transfers, and initial A-face count $1\le a\le15$.
+Simulate every resulting face-only FIFO itinerary, including repeated
+appearance of a face card in separate tricks when allowed. Its return
+permutation on 16 distinct temporary face labels must be colorable by
+four ranks, each with multiplicity four.
+
+An independent optimized C++ implementation and the original Python
+implementation agree \emph{as sets} on all surviving itineraries for each
+winner-word type. The resulting counts are
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Canonical winner word (B=1, A=0) & Face skeletons\\
+\midrule
+111110 & 199\\
+111100 & 2361\\
+111010 & 2121\\
+111000 & 5286\\
+110110 & 2489\\
+110100 & 4293\\
+101010 & 4658\\
+\midrule
+Total & 21,407\\
+\bottomrule
+\end{tabular}
+\end{center}
+These skeletons collectively represent 2,688,096 rank colorings, before
+imposing the ordinary gaps. For each skeleton, the 18 ordinary gaps are
+nonnegative integers summing to 36. The exact linear feasibility model of
+the previous section imposes all interruptions, completed payments, queue
+availability, collection order, and equality of the final gaps with the
+initial gaps. Native Z3 4.13.3 reports \word{unsat} for 21,406 skeletons and
+\word{sat} for exactly one. Every non-\word{sat}/\word{unsat} solver result
+is an error, not an exclusion.
+
+The sole feasible skeleton has initial A-face count nine, winner word
+111010 ($BBBABA$), and face counts $(2,2,1,5,1,1)$. Its face-label
+return permutation has the four four-cycles
+\[
+(0,6,13,10),\ (1,7,4,12),\ (2,8,5,3),\ (9,15,14,11).
+\]
+Model enumeration yields exactly one solution of the entire system: after
+adding a blocking clause for the rank and gap assignment, Z3 reports
+\word{unsat}. The unique solution has orbit ranks $(3,4,2,1)$ and
+ordinary-gap vector
+\[
+(0,1,5,3,1,3,0,1,5,2,\ 1,1,1,2,0,5,4,1).
+\]
+It reconstructs \emph{exactly} the two hands in Section~2. The separate
+rational-arithmetic rigidity certificate of the preceding section establishes
+uniqueness within this skeleton without relying on Z3, and even without a
+prior restriction on the number of ordinary cards.
+
+The six displayed boundary states have distinct, primitive winner-word
+rotations. Their player-swapped states are not among those six, because the
+complement of $BBBABA$ is not a cyclic rotation of it. These are thus
+exactly two disjoint six-state orbits when A and B are fixed, or one
+symmetry class under exchange of players. The published standard-deck
+six-cycle contains no $26$--$26$ boundary, as direct simulation shows; a
+$26$--$26$ predecessor was exhibited above.
+\end{proof}
+
+\paragraph{Balanced starting deals.}
+The backward component of each oriented orbit contains 181 states, of
+which 19 have a balanced hand split. These two components cannot intersect,
+since the completed-trick map is deterministic and their terminal cycles
+are disjoint. Consequently there are 38 distinct balanced rank states
+(including both possible leaders) whose eventual period is six: 19 in each
+component. Exactly 19 of these have A as the next leader, and 19 have B
+as the next leader. This strengthens the previously stated accessibility
+result but does not claim that every possible 26--26 \emph{labelled} deal
+has period six.
 
 \section{General structural consequences}
 
@@ -545,6 +650,23 @@ through five. This verifies the feasibility computations using a distinct
 solver interface, but it does not replace the need to audit the underlying
 model reduction.
 
+To reproduce the exhaustive \emph{period-six classification}, generate
+the face-only skeletons with the independent C++ enumerator and check them
+using the native solver interface:
+\begin{verbatim}
+c++ -O3 -std=c++17 skeleton6.cpp -o skeleton6
+./skeleton6 skeleton6.tsv
+python classify_six.py --json verification/six_full.json
+python enumerate_models.py --json verification/six_models.json
+python check_rigidity.py
+\end{verbatim}
+The complete enumeration was also partitioned into disjoint consecutive
+ranges of skeleton indices, with all 21,407 cases covered. The
+\word{crosscheck\_skeletons.py} script reproduces each of seven winner-word
+classes using the original Python face generator; the resulting sets of
+candidate skeletons agree exactly, not merely in size. These data and
+classification scripts are included in the repository.
+
 The backward component can be independently reproduced without third-party
 Python packages:
 \begin{verbatim}
@@ -558,11 +680,12 @@ game simulators. The fixed-period exclusions are still a computational
 certificate, not a proof-assistant formalization. The explicit upper-bound
 and balanced-entry calculations can be checked directly from the words.
 
-No claim is made here that the six-cycle is the unique cycle of minimum
-period, that 38 is the least possible number of individual plays, or that
-every prescribed split occurs on a six-cycle. What is established is the
-minimum completed-trick rank period over all splits, and its attainment as
-an eventual period from an equal deal.
+The six-trick rank-state orbit is unique up to symmetry. Therefore 38 is
+also the exact number of individual plays in \emph{every} primitive
+six-trick cycle of the standard inventory, but we do not assert that 38 is
+the smallest possible number of plays among cycles of all trick periods.
+Nor do we establish a minimum for fully distinguished physical-card periods
+or reachability from every prescribed initial hand split.
 
 \begin{thebibliography}{9}
 \bibitem{paulhus}

@@ -32,3 +32,27 @@ jobs:
         with:
           name: beggar-minimum-period-paper
           path: minimum_period.pdf
+  classify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install native Z3 and C++ compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libz3-dev g++
+      - name: Generate all six-trick face itineraries
+        run: |
+          c++ -O3 -std=c++20 skeleton6.cpp -o skeleton6
+          ./skeleton6 skeleton6.tsv
+          gzip -dc skeleton6.tsv.gz | cmp - skeleton6.tsv
+      - name: Classify all 21407 skeletons using exact integer constraints
+        run: python3 classify_six.py --json verification/ci_classification.json
+      - name: Prove unique rank and gap model
+        run: python3 enumerate_models.py --json verification/ci_classification_models.json
+      - name: Independently check the complete face enumeration
+        run: make crosscheck-six
+      - name: Audit archived classification evidence
+        run: python3 verify_classification_reports.py
