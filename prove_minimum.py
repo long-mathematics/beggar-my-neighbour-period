@@ -180,8 +180,15 @@ def skeletons(period):
                     }
 
 
-def gap_problem(case, ordinary_count=36):
-    """Exact integer constraints for fillings of a skeleton; None frees C count."""
+def gap_problem(case, ordinary_count=36, play_budget=None, return_details=False):
+    """Exact integer constraints for a skeleton, optionally bounding card plays.
+
+    ``ordinary_count=None`` leaves the ordinary-card inventory unrestricted.
+    The default return value remains the solver, for compatibility with the
+    trick-period and native-Z3 verifiers. With ``return_details=True``, return
+    ``(solver, details)``; details contains the face ranks, eighteen initial
+    gaps, orbit-rank variables, and exact individual-play expression.
+    """
     a = case["A_face_count"]
     orbits = case["permutation_cycles"]
     orbit_ranks = [z3.Int(f"rank_{i}") for i in range(len(orbits))]
@@ -203,6 +210,7 @@ def gap_problem(case, ordinary_count=36):
         solver.add(z3.Sum([z3.If(v == rank, len(orbit), 0)
                            for v, orbit in zip(orbit_ranks, orbits)]) == 4)
     leader = 0
+    plays = z3.IntVal(0)
     for events in case["face_events"]:
         first, face = events[0]
         assert faces[first][0] == face
@@ -217,6 +225,9 @@ def gap_problem(case, ordinary_count=36):
         hand_gaps[first].pop(0)
         pile_faces = [face]
         pile_gaps = [2 * first_gap + offset]
+        # Count every face, the alternating ordinary prefix, all interrupted
+        # payments, and the final completed payment exactly once.
+        plays += len(events) + 2 * first_gap + offset
         previous_player, previous_face = first, face
         for player, face in events[1:]:
             assert player == 1 - previous_player
@@ -227,9 +238,11 @@ def gap_problem(case, ordinary_count=36):
             hand_gaps[player].pop(0)
             pile_faces.append(face)
             pile_gaps.append(gap)
+            plays += gap
             previous_player, previous_face = player, face
         winner, loser = previous_player, 1 - previous_player
         payment = ranks[previous_face]
+        plays += payment
         assert faces[loser]  # Necessary for membership in an infinite cycle.
         solver.add(hand_gaps[loser][0] >= payment)
         hand_gaps[loser][0] -= payment
@@ -246,6 +259,11 @@ def gap_problem(case, ordinary_count=36):
         assert len(hand_gaps[player]) == len(original_gaps[player])
         solver.add(*[new == old for old, new in
                      zip(original_gaps[player], hand_gaps[player])])
+    if play_budget is not None:
+        solver.add(plays <= play_budget)
+    if return_details:
+        return solver, {"ranks": ranks, "gaps": gaps,
+                        "orbit_ranks": orbit_ranks, "plays": plays}
     return solver
 
 

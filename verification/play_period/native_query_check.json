@@ -1,0 +1,22 @@
+{
+  "scope": "Known 38-play positive case and its complete second-model exclusion",
+  "global_exclusion_recomputed": false,
+  "classification_file": "classification.json",
+  "classification_sha256": "a8eae0fa98720fc0d91cb8e3c4e7756dbca2de09e3d0a6f25b0486946e888932",
+  "native_z3_version": "4.13.3.0",
+  "blocked_variables": 22,
+  "query_hashes_match_classification": true,
+  "queries": [
+    {
+      "file": "known_sat38.smt2",
+      "sha256": "ac6bc9df1876882db442105b108b388f697a5ee39aa783d603f271219def9867",
+      "status": "sat"
+    },
+    {
+      "file": "known_sat38_blocked.smt2",
+      "sha256": "b899aa4786901ddfcd8a13b6b34499f4bd0a91c31631a63834b728d53924e785",
+      "status": "unsat"
+    }
+  ],
+  "verified_at_utc": "2026-11-19T07:49:14.178225+00:00"
+}

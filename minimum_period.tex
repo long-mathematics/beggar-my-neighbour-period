@@ -15,26 +15,29 @@
 \setlength{\parskip}{5pt}
 \setlength{\parindent}{0pt}
 \emergencystretch=2em
-\title{The minimum trick period in Beggar-My-Neighbour is six\\\large Classification and uniqueness of the optimal cycle}
+\title{The unique shortest rank-state cycle\\in Beggar-My-Neighbour\\\large Six tricks and 38 individual plays}
 \author{Christopher D. Long}
-\date{18 November 2026}
+\date{19 November 2026}
 \begin{document}
 \maketitle
 
 \begin{abstract}
-For chronological pickup and winner-led play, the least possible primitive
-period of a standard 52-card game, measured at completed-trick boundaries and
-identifying cards with the same game behaviour, is six. An explicit cycle uses
-38 individual card plays and starts at a $30$--$22$ split. A $26$--$26$ deal
-enters it after one trick, and the cycle has 181 backward-reachable rank
-states, including 19 balanced starts. The upper bound has a short, directly checkable word
-certificate. The lower bound reduces all possible periods below six to 1,201
-face-card itineraries, followed by exact integer gap feasibility. For period
-six, the corresponding 21,407 face-card itineraries yield exactly one
-feasible skeleton, with a unique rank-and-gap realization. Thus the displayed
-cycle is the only six-trick rank-state cycle, up to cyclic phase and exchange
-of players. We also classify period-four deck sizes and prove fixed-period
-deck-size sets are semilinear.
+Under chronological pickup and winner-led play, the minimum primitive
+rank-state cycle lengths for the standard 52-card inventory are six completed
+tricks and 38 individual plays. One cycle attains both minima and is unique
+under either criterion, up to cyclic phase and exchange of players. Its
+$30$--$22$ witness has a short word certificate, and a $26$--$26$ deal enters
+it after one trick. The trick-period proof excludes 1,201 face itineraries
+below six tricks and classifies all 21,407 six-trick itineraries. For the
+global individual-play result, an elementary bound reduces the problem to
+at most 18 tricks. Two independently implemented enumerators agree on all
+43,808 candidate itineraries through 38 plays; exact integer gap constraints
+leave one itinerary and one rank-and-gap model. A short modular-arithmetic
+argument independently proves rigidity of that surviving model. With named
+players there are two oriented cycles, each with six boundary states and
+181 backward-reachable rank states, including 19 balanced starts. We also
+classify period-four deck sizes and prove that fixed-period deck-size sets
+are semilinear.
 \end{abstract}
 
 \section{Introduction and conventions}
@@ -45,18 +48,24 @@ statement of Paulhus~\cite{paulhus} and the historical account of
 Casella et al.~\cite{casella}. Casella and collaborators constructed a
 nonterminating standard-deck game with a 62-trick cycle, solving Conway's
 anti-Hilbert problem. More recent computational and dynamical investigations
-include Andorno et al.~\cite{andorno}. The aim here is different: to minimize
-the primitive cycle period, under the same deterministic rules and standard
-deck inventory. The construction and lower-bound computation described below
-show that the minimum is six tricks. A further exhaustive calculation
-classifies every optimal orbit and proves its uniqueness up to symmetry. We distinguish a cycle's primitive period
-from the transient needed to enter it and from a period that tracks the suits
-or physical identities of all cards.
+include Andorno et al.~\cite{andorno}. We minimize the primitive rank-state
+cycle length under the same deterministic rules and standard deck inventory,
+using both completed tricks and individual card plays as measures of time.
+The minima are six tricks and 38 plays. The same cycle uniquely attains
+either minimum, up to cyclic phase and player exchange. In particular,
+allowing more than six tricks yields neither a shorter individual-play cycle
+nor an additional cycle with 38 plays. We distinguish these primitive periods
+from the transient needed to enter a cycle and from periods that track the
+suits or physical identities of all cards.
 
-This paper is a computationally assisted research manuscript. Its claim of
-optimality depends on an exhaustive integer-constraint reduction, accompanied
-by reproducible source code and two solver interfaces. The upper-bound witness
-is an exact hand-checkable word identity.
+The global exclusions and classifications are computer-assisted, using an
+exhaustive face-itinerary reduction and exact integer gap constraints.
+Independent enumeration implementations, reproducible source code, and two
+solver interfaces support the computations. The upper-bound witness is an
+exact hand-checkable word identity. Uniqueness within the surviving face
+itinerary also has an elementary modular-arithmetic proof; that positive-case
+argument is separate from the computer-assisted exclusion of every other
+itinerary.
 
 
 Write $\CC$ for any ordinary card and use $\JJ,\QQ,\KK,\AA$ for cards requiring
@@ -69,27 +78,33 @@ A state here is $(H_A,H_B,\ell)$ at an empty-table boundary immediately after
 collection: both ordered words and the next leader are included. Equal face
 ranks are identified, as are all ordinary cards. Let $T$ be the completed-trick
 map on states for which another trick can be completed. The primitive period
-is the least positive $p$ with $T^p(s)=s$.
+in tricks is the least positive $p$ with $T^p(s)=s$. Its individual-play
+period $L$ is the number of cards played during those $p$ tricks. Cyclic
+changes of the starting boundary leave both quantities unchanged.
 
-\begin{theorem}[Minimum over all splits]
+\begin{theorem}[Both minima and their unique attaining cycle]\label{thm:main}
 For inventory $\CC^{36}\JJ^4\QQ^4\KK^4\AA^4$,
 \[
-\boxed{\min_{s\text{ periodic}}\operatorname{per}(s)=6.}
+\boxed{p_{\min}=6\text{ tricks},\qquad L_{\min}=38\text{ individual plays}.}
 \]
-The minimum is attained by a $30$--$22$ state. It is also the minimum possible
-eventual period of an infinite game begun with a $26$--$26$ deal. Moreover,
-all six-trick rank-state cycles are equivalent to the displayed example by
-cyclic time shift and exchange of the two players.
+Both minima are taken over all nonempty hand splits. Up to cyclic phase and
+exchange of players, exactly one cycle has six tricks, and exactly one cycle
+has 38 individual plays; these are the same cycle. A $30$--$22$ state attains
+the minima, and a $26$--$26$ deal reaches it after one trick. Thus both minima
+are also attained as eventual periods from balanced deals. With player names
+fixed, the attaining cycles comprise exactly two oriented orbits, each with
+six completed-trick boundary states.
 \end{theorem}
 
-The lower bound below is a computer-assisted exhaustive proof using integer
-arithmetic. The existence proof is the explicit six-trick calculation in the
-next section. This theorem concerns the minimum over all splits, rather than
-a separate function assigning a minimum to each prescribed boundary split.
-It also does not assert a minimum for individual card plays or for periods
-that distinguish all 52 physical cards.
+The existence proof is the explicit calculation in the next section.
+The trick-period exclusions and classification are given below; the global
+individual-play classification is in Section~\ref{sec:global-plays}, with
+elementary rigidity in Section~\ref{sec:rigidity}. The theorem concerns the
+minimum over all splits and the attainable eventual periods from balanced
+deals. It does not assign a minimum to every prescribed boundary split or
+minimize periods that distinguish all 52 physical cards.
 
-\section{A six-trick cycle with a word certificate}
+\section{A six-trick cycle with a word certificate}\label{sec:witness}
 
 Player A leads from the following hands:
 \[
@@ -204,7 +219,7 @@ $SR=D^qXYX=D^{q+1}X=DS$.
 This lemma imposes only FIFO closure; legality of the intervening face-card
 challenge sequence must still be verified. In our six-trick witness, each
 player plays 19 cards, and their original queues are longer than 19. The
-packet identities in the preceding section instantiate the equation without
+packet identities in Section~\ref{sec:witness} instantiate the equation without
 replaying collected cards during the cycle.
 
 \section{Backward accessibility from a balanced deal}
@@ -232,11 +247,12 @@ forward-replays each one. Combining it with the global six-trick lower bound
 shows that an eventual period of six can be attained from all A-leading
 splits $20$--$32$ through $33$--$19$, and the explicit balanced deal above
 enters the cycle in one trick. The script also records the complete list of
-19 balanced starts for independent inspection. Here the finite counts are
-specific to the displayed six-cycle; they are not claims about every
-six-trick cycle.
+19 balanced starts for independent inspection. These counts refer to the
+displayed named-player orientation. Section~\ref{sec:six-classification}
+accounts for its player-swapped copy and both components together. The global
+uniqueness theorem identifies these as all orbits attaining either minimum.
 
-\section{Why the lower-bound search is exhaustive}
+\section{Why the face-itinerary search is exhaustive}\label{sec:faces}
 
 \begin{lemma}[Faces and winners]
 On a periodic orbit, both players win at least once, and each hand contains
@@ -265,7 +281,7 @@ Face balance over a return requires
 \sum_{i:w_i=A} k_i=\sum_{i:w_i=B}k_i.
 \]
 
-For fixed $p$, the exhaustive enumeration is therefore finite and small:
+For fixed $p$, the exhaustive enumeration is therefore finite:
 \begin{enumerate}
 \item Enumerate nonconstant binary winner words of length $p$, up to cyclic
 rotation and exchange of the players. Choose a representative ending in A,
@@ -288,7 +304,7 @@ This covers every initial card split. It enumerates the number of faces in
 each initial hand, but puts no restriction on the number of ordinary cards
 assigned to either hand beyond nonnegativity and their combined inventory.
 
-\section{Exact ordinary-gap constraints}
+\section{Exact ordinary-gap constraints}\label{sec:gaps}
 
 With $a$ faces in A's hand, write its word as
 \[
@@ -324,6 +340,19 @@ The formulation is both necessary and sufficient for a legal return along
 the prescribed face itinerary. There is no floating-point tolerance or
 sampling in this calculation.
 
+\paragraph{Counting individual plays.}
+The same gap bookkeeping counts every play exactly. For trick $i$, let $g_i$
+be the leading ordinary gap of its first face supplier, let $\delta_i$ be
+one when that supplier is the nonleader and zero otherwise, let $h_{ij}$
+be the ordinary gap before face $j\ge2$, and let $r_i$ be the final face's
+penalty. The pile length is
+\begin{equation}\label{eq:exact-play-count}
+\ell_i=m_i+2g_i+\delta_i+\sum_{j=2}^{m_i}h_{ij}+r_i.
+\end{equation}
+For a fixed itinerary this is an affine integer expression. Thus a bound
+on the total individual-play period is imposed exactly by adding
+$\sum_i\ell_i\le B$ to the gap system.
+
 \subsection{The finite certificate for periods below six}
 
 \begin{center}
@@ -343,7 +372,8 @@ Total & 1,201 & 155,256 & 0\\
 
 A one-trick return is impossible because its winner strictly gains cards.
 The table excludes every possible return of length two through five. Together
-with the explicit six-cycle, this proves the theorem. The table counts
+with the explicit six-cycle, this proves the minimum trick-period assertion
+of Theorem~\ref{thm:main}. The table counts
 itineraries after symmetry and face-inventory filtering, not all physical
 deals and not distinct periodic orbits. The standalone checker regenerates
 the table from scratch; no precomputed candidate list is required.
@@ -425,7 +455,7 @@ and every rank permutation. Their period is four, since period two is
 impossible for this face inventory. In particular, the standard count
 $c=36$ is excluded by a substantial margin.
 
-\section{The six-trick pattern is rigid}
+\section{The six-trick pattern is rigid}\label{sec:rigidity}
 
 Suppress ordinary cards in the six-cycle and write the face words as
 \[
@@ -434,6 +464,62 @@ H_A:\ xyzzyzxyz,\qquad H_B:\ wxwyxww.
 The trick face counts are $(2,2,1,5,1,1)$, with winners $BBBABA$. The
 physical-face return permutation has four cycles of length four. Thus
 $(x,y,z,w)$ must permute $(1,2,3,4)$ if the inventory has four of each rank.
+
+\subsection{An elementary proof for the standard inventory}
+
+Write A's ordinary gaps as $(a_0,\ldots,a_9)$ and B's as
+$(b_0,\ldots,b_7)$. The linear gap-return equations have rank 17. With
+$u=b_6$, all their solutions are the affine formulas in
+Appendix~\ref{app:affine}. Adding those 18 formulas gives the following
+identity for the total ordinary count $C$:
+\begin{equation}\label{eq:rigidity-count}
+12C=115u+34x+2y-100z+125w-63.
+\end{equation}
+
+\begin{proposition}[Standard-inventory rigidity]\label{prop:rigidity}
+For the prescribed face itinerary, the standard inventory admits exactly one
+rank-and-gap realization. It has $(x,y,z,w)=(3,4,2,1)$ and $u=4$, and is
+the witness of Section~\ref{sec:witness}.
+\end{proposition}
+\begin{proof}
+Substitute $C=36$ and $w=10-x-y-z$ in \eqref{eq:rigidity-count}. This gives
+\[
+115u=91x+123y+225z-755.
+\]
+Because $u$ is an integer,
+\[
+-24x+8y-5z\equiv65\pmod{115}.
+\]
+The bounds $1\le x,y,z\le4$ imply
+\[
+-108\le-24x+8y-5z\le3.
+\]
+The only integer in this interval congruent to 65 modulo 115 is $-50$.
+Hence $24x-8y+5z=50$. Reduction modulo 8 forces $z=2$, leaving
+$3x-y=5$. The possibilities in $\{1,2,3,4\}$ are $(x,y)=(2,1)$ and
+$(3,4)$; distinctness from $z=2$ excludes the first. Consequently
+\[
+\boxed{(x,y,z,w)=(3,4,2,1)=(\KK,\AA,\QQ,\JJ),\qquad u=4.}
+\]
+The affine formulas now fix all gaps:
+\[
+g_A=(0,1,5,3,1,3,0,1,5,2),\qquad
+g_B=(1,1,1,2,0,5,4,1).
+\]
+These are nonnegative integers totaling 36. The direct play in
+Section~\ref{sec:witness} proves legality and return, establishing existence
+as well as uniqueness.
+\end{proof}
+
+The standard-library checker \word{check\_algebraic\_rigidity.py}
+independently derives the 18 return equations by symbolic FIFO transport,
+verifies the physical face orbits, performs exact rational row reduction,
+checks the complete affine parameterization and \eqref{eq:rigidity-count},
+and verifies the modular deduction and a direct labelled-face replay.
+This positive-case rigidity proof does not depend on an SMT solver's
+second-model exclusion.
+
+\subsection{Rigidity even with unrestricted ordinary count}
 
 For this particular itinerary, \emph{without specifying an ordinary-card
 count}, there is only one legal periodic realization: $(x,y,z,w)=(3,4,2,1)$
@@ -471,7 +557,7 @@ $1+3n<3$, forcing $n=0$. This rational calculation certifies uniqueness for the 
 itinerary considered here. The next section shows that no other six-trick
 itinerary admits any legal standard-deck realization.
 
-\section{Complete classification of the six-trick cycles}
+\section{Complete classification of the six-trick cycles}\label{sec:six-classification}
 
 We now complete the period-six classification rather than merely exhibiting
 one cycle. The equivalence relation identifies cyclic shifts of the trick
@@ -479,7 +565,7 @@ boundary and the exchange of players A and B. We continue to identify equal
 face ranks and ordinary cards. Distinguishing the physical card labels gives
 a different periodicity problem; it is not the convention used here.
 
-\begin{theorem}[Uniqueness of the optimal rank-state cycle]
+\begin{theorem}[Complete classification at six tricks]\label{thm:six}
 For the standard inventory $\CC^{36}\JJ^4\QQ^4\KK^4\AA^4$,
 there is, up to cyclic time shift and exchange of the two players,
 \emph{exactly one} primitive six-trick cycle. Its pile lengths are
@@ -525,7 +611,7 @@ Total & 21,407\\
 These skeletons collectively represent 2,688,096 rank colorings, before
 imposing the ordinary gaps. For each skeleton, the 18 ordinary gaps are
 nonnegative integers summing to 36. The exact linear feasibility model of
-the previous section imposes all interruptions, completed payments, queue
+Section~\ref{sec:gaps} imposes all interruptions, completed payments, queue
 availability, collection order, and equality of the final gaps with the
 initial gaps. Native Z3 4.13.3 reports \word{unsat} for 21,406 skeletons and
 \word{sat} for exactly one. Every non-\word{sat}/\word{unsat} solver result
@@ -544,9 +630,10 @@ ordinary-gap vector
 \[
 (0,1,5,3,1,3,0,1,5,2,\ 1,1,1,2,0,5,4,1).
 \]
-It reconstructs \emph{exactly} the two hands in Section~2. The separate
-rational-arithmetic rigidity certificate of the preceding section establishes
-uniqueness within this skeleton without relying on Z3, and even without a
+It reconstructs \emph{exactly} the two hands in Section~\ref{sec:witness}.
+Proposition~\ref{prop:rigidity} independently proves uniqueness for the
+standard inventory by modular arithmetic. The additional rational-arithmetic
+certificate of the preceding section establishes uniqueness even without a
 prior restriction on the number of ordinary cards.
 
 The six displayed boundary states have distinct, primitive winner-word
@@ -568,6 +655,135 @@ component. Exactly 19 of these have A as the next leader, and 19 have B
 as the next leader. This strengthens the previously stated accessibility
 result but does not claim that every possible 26--26 \emph{labelled} deal
 has period six.
+
+\section{Global minimum and uniqueness in individual plays}\label{sec:global-plays}
+
+To compare the six-trick witness with cycles having more tricks, we classify
+every return with at most 38 plays, without restricting its number of tricks
+or its hand split.
+
+\subsection{An elementary finite range}
+
+\begin{lemma}[Plays versus changes of winner]\label{lem:play-range}
+If a periodic return has $p$ completed tricks, $L$ individual plays, and $c$
+changes of winner in its cyclic winner word, then
+\[
+L\ge2p+c\ge2p+2.
+\]
+\end{lemma}
+\begin{proof}
+Every completed trick needs at least two plays. A two-play trick is the
+leader's jack followed by the other player's ordinary card. Its winner
+therefore equals its leader, who is the previous winner. Each change of
+winner requires at least three plays. Both players win on a periodic orbit,
+so the cyclic winner word has at least two changes. Summing the per-trick
+bounds proves the claim.
+\end{proof}
+
+Consequently $L\le38$ implies $p\le18$. A one-trick return is impossible
+because its winner gains cards. It is therefore sufficient to consider
+$p=2,\ldots,18$, including returns whose winner word has a smaller period
+than the full state. No primitivity assumption is used to discard cases.
+
+\subsection{Enumeration and exact play accounting}
+
+Use the exhaustive face-itinerary representation of Section~\ref{sec:faces}.
+For a fixed winner word and face counts, let $\delta_i$ indicate that the
+first face of trick $i$ belongs to its nonleader. Before solving the gap
+system, the necessary bound
+\[
+L\ge\sum_i(m_i+\delta_i)+
+       \min_{\rho}\sum_i\rho(f_i^{\mathrm{last}})
+\]
+can discard itineraries. Here $f_i^{\mathrm{last}}$ is the final labelled
+face, and $\rho$ ranges over ranks constant on the returning face-permutation
+orbits, with inventory four for each rank. The minimum is computed exactly
+by a finite inventory dynamic program. It uses only the forced faces,
+initial ordinary offsets, and final payments; any remaining ordinary plays
+can only increase the total.
+
+Partial itineraries also admit safe necessary bounds. Each remaining trick
+costs at least two plays. If $r$ tricks remain and the current A-face count
+differs from its initial value by $\Delta$, restoration needs at least
+$|\Delta|$ further face transfers. Those transfers require at least
+$2|\Delta|$ face events, so the remaining plays cost at least
+$2|\Delta|+r$. These bounds accelerate enumeration without eliminating a
+legal return.
+
+The programs \word{bounded\_play\_skeletons.cpp} and
+\word{independent\_play\_skeletons.cpp} implement separate complete
+enumerations. Their surviving candidate sets agree exactly for every
+$p=2,\ldots,18$, after the same cyclic-phase and player-exchange reductions.
+For each surviving itinerary, the model imposes all ordinary-gap constraints
+of Section~\ref{sec:gaps}, the standard count 36, all rank inventories, and
+the exact bound $\sum_i\ell_i\le38$ from \eqref{eq:exact-play-count}.
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Tricks & Candidate itineraries & Feasible itineraries & Rank/gap models\\
+\midrule
+2&2&0&0\\
+3&10&0&0\\
+4&145&0&0\\
+5&565&0&0\\
+6&4,234&1&1\\
+7&7,119&0&0\\
+8&13,140&0&0\\
+9&8,530&0&0\\
+10&5,178&0&0\\
+11&3,340&0&0\\
+12&1,340&0&0\\
+13&166&0&0\\
+14&35&0&0\\
+15&4&0&0\\
+16&0&0&0\\
+17&0&0&0\\
+18&0&0&0\\
+\midrule
+Total&43,808&1&1\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These counts include the necessary 38-play filters, so they are smaller
+than the unrestricted face-itinerary counts used for the earlier
+trick-period results. The global enumeration has 43,807 infeasible cases
+and one feasible case. Every solver response other than \word{sat} or
+\word{unsat} aborts the classification; a timeout is never an exclusion.
+
+For every satisfiable case, \word{verify\_unique38.py} records a model,
+blocks the complete assignment of all initial gaps and all orbit ranks,
+and continues until unsatisfiable. The sole feasible case has 22 essential
+variables: 18 ordinary gaps and four orbit ranks. Blocking its full
+assignment yields \word{unsat}, so no second rank-and-gap realization is
+hidden in that case. The positive model and its blocked query were checked
+with Z3 5.4.1 and native Z3 4.13.3. Independently,
+Proposition~\ref{prop:rigidity} proves the same uniqueness by arithmetic.
+The sole realization is the six-trick witness and has exactly 38 plays.
+
+\begin{theorem}[Unique global minimum in individual plays]\label{thm:plays}
+For the standard inventory, every rank-state cycle has at least 38 individual
+plays. Up to cyclic phase and exchange of players, exactly one cycle attains
+38 plays; it is the six-trick cycle of Section~\ref{sec:witness}.
+\end{theorem}
+\begin{proof}[Computer-assisted exclusion and elementary positive case]
+Lemma~\ref{lem:play-range} reduces every return with at most 38 plays to the
+finite range just classified. The exhaustive face enumeration and exact gap
+constraints leave only the displayed face itinerary.
+Proposition~\ref{prop:rigidity} gives its unique rank-and-gap realization,
+and direct play shows that this realization uses 38 plays. Thus there is
+no shorter cycle and no other equivalence class at equality.
+\end{proof}
+
+The equivalence relation uses only cyclic phase and exchange of the two
+players; different face ranks are not identified and queues are not reversed.
+Player exchange acts on both hands and the next leader. Since the complement
+of $BBBABA$ is not a cyclic rotation, the equality class has exactly two
+named-player orientations and twelve completed-trick boundary states. The
+balanced predecessors and backward components described above therefore
+account for all cycles attaining either of the two global minima. Together
+with Theorem~\ref{thm:six}, this completes Theorem~\ref{thm:main}.
 
 \section{General structural consequences}
 
@@ -622,7 +838,33 @@ multiple is $396$, so the labelled-card period of this example is
 or $396\cdot38=15{,}048$ individual plays. This does not make 2376 a claimed
 minimum among labelled-card cycles.
 
-\section{Reproduction and scope of verification}
+\section{Reproduction and scope of verification}\label{sec:reproduction}
+
+\subsection{Global classification through 38 plays}
+
+The repository contains both C++ enumerators, the compressed candidate set,
+the exact play-count model, the all-model classifier, the independent
+algebraic checker, and complete reports under
+\word{verification/play\_period/}. With Python 3, \word{z3-solver}, and a
+C++20 compiler, the following commands regenerate both complete candidate
+sets, compare them exactly, classify every candidate, and check the
+elementary positive-case proof:
+\begin{verbatim}
+python3 verify_unique38.py --crosscheck --workers 2 \
+  --json verification/play_period/fresh_crosscheck.json
+python3 check_algebraic_rigidity.py \
+  --json verification/play_period/algebraic_rigidity.json
+\end{verbatim}
+The Make target \word{crosscheck-plays} runs the full crosscheck.
+The target \word{verify-algebraic} runs the arithmetic certificate.
+The target \word{verify-plays} checks the committed
+complete candidate archive and reruns all feasibility and model-exhaustion
+checks. The reports record all 43,808 candidates, the sole 22-variable
+assignment, its positive and blocked SMT queries, and the direct replay.
+Continuous integration runs the full enumeration crosscheck and publishes
+the verification report and those queries.
+
+\subsection{Trick periods and the structural results}
 
 The portable script \word{prove\_minimum.py} requires Python 3 and
 \word{z3-solver}. It regenerates all face itineraries for periods two
@@ -667,25 +909,81 @@ classes using the original Python face generator; the resulting sets of
 candidate skeletons agree exactly, not merely in size. These data and
 classification scripts are included in the repository.
 
-The backward component can be independently reproduced without third-party
-Python packages:
+The backward components and player-swap symmetry can be independently
+reproduced without third-party Python packages:
 \begin{verbatim}
 python backward_component.py --json verification/backward_component.json
-python native_z3_check.py --json verification/native_z3.json
+python verify_orbit_symmetry.py --json verification/orbit_symmetry.json
 \end{verbatim}
+The native solver path is reproduced separately with
+\word{python native\_z3\_check.py} and requires an installed Z3 shared
+library, but no Python Z3 bindings.
 
-The minimum proof was crosschecked using independently written gap
-bookkeeping, an independent winner-necklace enumerator, and two direct
-game simulators. The fixed-period exclusions are still a computational
-certificate, not a proof-assistant formalization. The explicit upper-bound
-and balanced-entry calculations can be checked directly from the words.
+\subsection{What is independently checked}
 
-The six-trick rank-state orbit is unique up to symmetry. Therefore 38 is
-also the exact number of individual plays in \emph{every} primitive
-six-trick cycle of the standard inventory, but we do not assert that 38 is
-the smallest possible number of plays among cycles of all trick periods.
-Nor do we establish a minimum for fully distinguished physical-card periods
-or reachability from every prescribed initial hand split.
+The original trick-period proof was crosschecked using independently written
+gap bookkeeping, an independent winner-necklace enumerator, and two direct
+game simulators. The global individual-play calculation additionally compares
+two independently implemented complete face-itinerary enumerators as sets.
+The exact gap model is shared with the established trick-period framework;
+the algebraic rigidity checker independently derives its positive case's
+return equations. The positive model and blocked second-model query also
+have a separate native-Z3 check. These are reproducible computer-assisted
+proofs, not proof-assistant formalizations or collections of independently
+checked SMT proof derivations. The witness, balanced entry, and modular
+rigidity argument can be checked directly from the displayed words and
+equations.
+
+\section{Conclusion}
+
+For the standard inventory and the stated rank-state convention, the unique
+six-trick cycle is also the unique cycle with globally minimal individual-play
+period 38, up to phase and player exchange. The unrestricted six-trick
+classification and the global 38-play classification establish two distinct
+optimization statements, attained by the same orbit. The two named-player
+orientations have twelve boundary states in total and exactly 38 balanced
+predecessors across their disjoint backward components. The proof of global
+exclusion is computer-assisted, while rigidity of its sole surviving
+itinerary follows from the short congruence argument above. We do not
+establish a minimum for fully distinguished physical-card periods or
+reachability from every prescribed initial hand split.
+
+\appendix
+\section{Complete affine return formulas for the surviving itinerary}\label{app:affine}
+
+Let $u=b_6$. Applying the gap transport rules of Section~\ref{sec:gaps} to
+the face itinerary with initial words $xyzzyzxyz$ and $wxwyxww$, winners
+$BBBABA$, and face counts $(2,2,1,5,1,1)$ gives the complete parameterization
+\[
+\begin{aligned}
+g_A&=(a_0,a_1,a_2,a_3,a_1,a_3,a_0,a_1,a_2,z),\\
+g_B&=(b_0,b_1,b_2,b_3,a_0,b_5,u,w),
+\end{aligned}
+\]
+where
+\[
+\begin{aligned}
+a_0&=\frac{5u-5w+2x-2y-8z+3}{12},
+  &a_1&=a_0+2w-1,\\
+a_2&=\frac{2u+4w+2x+y-2z-3}{3},
+  &b_1&=2a_0+w,\\
+a_3&=\frac{5u+7w+2x-2y-2z-3}{6},
+  &b_3&=2a_1-w+1,\\
+b_0&=\frac{2u-2w-x+y-2z}{3},\\
+b_2&=\frac{u-w-2x+2y-1}{4},\\
+b_5&=\frac{u-w+2y-1}{2}.
+\end{aligned}
+\]
+The coefficient matrix of the 18 gap-return equations has rank 17, with
+$b_6$ its only free coordinate. Substitution verifies the displayed family
+for every $u,x,y,z,w$, proving completeness of the parameterization.
+These claims are checked by exact rational row reduction and symbolic FIFO
+transport in \word{check\_algebraic\_rigidity.py}. Summing all 18 entries
+directly yields
+\[
+12C=115u+34x+2y-100z+125w-63,
+\]
+the identity used in Proposition~\ref{prop:rigidity}.
 
 \begin{thebibliography}{9}
 \bibitem{paulhus}

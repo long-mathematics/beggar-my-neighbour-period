@@ -1,4 +1,7 @@
-.PHONY: paper verify-native verify-all classify-six crosscheck-six clean
+PYTHON ?= python3
+WORKERS ?= 2
+
+.PHONY: paper verify-native verify-all classify-six crosscheck-six verify-plays crosscheck-plays verify-play-queries verify-algebraic clean
 paper:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error minimum_period.tex
 verify-native:
@@ -17,11 +20,22 @@ crosscheck-six:
 	@for w in 111110 111100 111010 111000 110110 110100 101010; do \
 		python3 crosscheck_skeletons.py --winner $$w --json verification/crosscheck_$$w.json || exit 1; \
 	done
+verify-plays:
+	$(PYTHON) verify_unique38.py --workers $(WORKERS) --json verification/play_period/fresh_classification.json
+crosscheck-plays:
+	$(PYTHON) verify_unique38.py --crosscheck --workers $(WORKERS) --json verification/play_period/fresh_crosscheck.json
+verify-play-queries:
+	$(PYTHON) check_play_queries.py --json verification/play_period/native_query_fresh.json
+verify-algebraic:
+	$(PYTHON) check_algebraic_rigidity.py --json verification/play_period/algebraic_rigidity.json
 verify-all:
 	python3 prove_minimum.py --structural --json verification/minimum_fresh.json
 	$(MAKE) verify-native
 	$(MAKE) classify-six
 	$(MAKE) crosscheck-six
+	$(MAKE) crosscheck-plays
+	$(PYTHON) check_play_queries.py --classification verification/play_period/fresh_crosscheck.json --json verification/play_period/native_query_fresh.json
+	$(MAKE) verify-algebraic
 clean:
 	latexmk -c
 	rm -f skeleton6
