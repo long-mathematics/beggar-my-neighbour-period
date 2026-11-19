@@ -4,6 +4,7 @@ paper:
 verify-native:
 	python3 native_z3_check.py --json verification/native_z3_fresh.json
 	python3 backward_component.py --json verification/backward_fresh.json
+	python3 verify_orbit_symmetry.py --json verification/orbit_symmetry_verification.json
 	python3 check_rigidity.py --json verification/rigidity_fresh.json
 classify-six:
 	c++ -O3 -std=c++20 skeleton6.cpp -o skeleton6

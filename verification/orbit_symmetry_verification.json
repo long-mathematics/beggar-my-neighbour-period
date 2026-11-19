@@ -1,0 +1,25 @@
+{
+  "primitive_period_tricks": 6,
+  "cycles_up_to_player_exchange": 1,
+  "oriented_cycles_with_named_players": 2,
+  "periodic_boundary_states": 12,
+  "backward_states_per_orientation": [
+    181,
+    181
+  ],
+  "backward_components_disjoint": true,
+  "maximum_preperiod_per_orientation": [
+    4,
+    4
+  ],
+  "balanced_ancestors_per_orientation": [
+    19,
+    19
+  ],
+  "balanced_ancestors_total": 38,
+  "balanced_ancestors_by_next_leader": {
+    "A": 19,
+    "B": 19
+  },
+  "player_swap_conjugacy_verified": true
+}

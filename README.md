@@ -114,6 +114,16 @@ there are exactly **38 balanced rank states** reaching a six-trick cycle,
 specific to the rank-state convention and exclude the number of suit-labelled
 deals, which is much larger.
 
+A separate **both-orientations backward-basin audit** verifies the symmetry
+claim without any SAT/SMT dependency. It reconstructs both backward components
+from all six cycle states, checks that exchanging players conjugates their
+completed-trick maps, confirms the components are disjoint, and counts all 38
+balanced predecessors (19 for each next leader):
+
+```bash
+python3 verify_orbit_symmetry.py --json verification/orbit_symmetry_verification.json
+```
+
 ## Proof and reproducibility
 
 The lower bound enumerates all legal face-card itineraries for periods 2–5 and

@@ -21,6 +21,8 @@ jobs:
         run: python prove_minimum.py --structural --json verification/ci_structural.json
       - name: Check backward component
         run: python backward_component.py --json verification/ci_backward.json
+      - name: Check both orientations of the backward component
+        run: python verify_orbit_symmetry.py --json verification/ci_orbit_symmetry.json
       - name: Check rigidity certificate
         run: python check_rigidity.py --json verification/ci_rigidity.json
       - name: Compile paper
