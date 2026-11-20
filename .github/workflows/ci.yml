@@ -29,15 +29,24 @@ jobs:
         run: python check_rigidity.py --json verification/ci_rigidity.json
       - name: Check elementary algebraic rigidity proof
         run: python check_algebraic_rigidity.py --json verification/play_period/ci_algebraic_rigidity.json
+      - name: Verify long-cycle witnesses and full inverse components
+        run: |
+          python3 long_cycles/verify.py --json /tmp/long_cycle_checks.json > /dev/null
+          diff -u long_cycles/verification/long_cycle_checks.json /tmp/long_cycle_checks.json
       - name: Compile paper
         run: |
           sudo apt-get update
           sudo apt-get install -y latexmk texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra
           latexmk -pdf -interaction=nonstopmode -halt-on-error minimum_period.tex
+          latexmk -cd -pdf -interaction=nonstopmode -halt-on-error long_cycles/long_cycles.tex
       - uses: actions/upload-artifact@v4
         with:
           name: beggar-minimum-period-paper
           path: minimum_period.pdf
+      - uses: actions/upload-artifact@v4
+        with:
+          name: beggar-long-cycles-paper
+          path: long_cycles/long_cycles.pdf
   classify:
     runs-on: ubuntu-latest
     steps:
