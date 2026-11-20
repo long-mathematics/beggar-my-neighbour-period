@@ -1,0 +1,307 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,hyperref,array}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newcommand{\C}{\mathrm C}
+\newcommand{\J}{\mathrm J}
+\newcommand{\Q}{\mathrm Q}
+\newcommand{\K}{\mathrm K}
+\renewcommand{\AA}{\mathrm A}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\emergencystretch=2em
+\title{Long Periodic Games of Beggar-My-Neighbour:\\Balanced Deals and Protected Queue Modules}
+\author{Christopher D. Long}
+\date{19 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give explicit periodic games for the standard $52$-card inventory of
+Beggar-My-Neighbour, under chronological collection and winner-led play.
+A $26$--$26$ deal enters a primitive rank-state cycle of $156$ completed
+tricks and $1{,}284$ individual plays after two tricks and $22$ plays.
+An unrestricted $38$--$14$ starting state lies directly on a $200$-trick,
+$1{,}264$-play cycle; a related $50$--$2$ construction has period $176$
+tricks and $1{,}228$ plays. The balanced construction is organized by a
+protected queue-module operation: one $12$-phase module and two fixed
+spacers give a $13$-trick control round repeated twelve times.
+We give a general two-trick balanced-loader lemma and describe exhaustive
+backward-component certificates for all three orbits. All existence and
+period assertions are accompanied by a standalone, dependency-free verifier.
+No global maximality of these periods is claimed.
+\end{abstract}
+
+\section{Rules and notions of period}
+A hand is a first-in, first-out queue, written with its next card at the
+left. An ordinary card is denoted $\C$; $\J,\Q,\K,\AA$ require respectively
+$1,2,3,4$ payments by the opponent. A face card played during a payment
+interrupts that payment and becomes the new claim. A completed payment is
+collected in chronological play order by the claimant, who leads the next
+trick. These are the conventions used in \cite{casella} and in the
+companion minimum-period work \cite{longshort}.
+
+We consider the inventory
+\[
+  \C^{36}\J^4\Q^4\K^4\AA^4.
+\]
+A \emph{rank state} is $(H_A,H_B,\ell)$ at an empty-table trick boundary,
+where $\ell\in\{A,B\}$ is the next leader. Ordinary cards and cards of
+the same face rank are indistinguishable; the two players are named.
+The \emph{primitive trick period} of a recurrent state is the smallest
+$p>0$ for which the entire rank state returns after $p$ completed tricks.
+Its \emph{play period} counts individual cards played during that return.
+An initial transient is excluded from both periods. We distinguish cycles
+accessible from a \emph{balanced} $26$--$26$ deal from cycles requiring an
+unrestricted starting split. A return of the rank state need not be a
+return of all $52$ individually labelled cards.
+
+Casella et al. constructed a cycle of $62$ tricks and $440$ plays accessible
+from a balanced deal \cite{casella}; further dynamical investigations are
+reported in \cite{andorno}. Our results give explicit longer examples, not
+claims of optimality among all decks.
+
+\section{Three explicit long cycles}
+\begin{theorem}[Balanced cycle]\label{thm:balanced}
+With $A$ leading, the $26$--$26$ deal
+\begin{verbatim}
+A: CCCCCCCCCCJCCCCCCCCQCKCKQK
+B: CCCCCCCCJCCKQCAAQAAJCCJCCC
+\end{verbatim}
+reaches a cycle after exactly two completed tricks, containing $19$ and
+$3$ plays respectively. The cycle has primitive period
+\[
+\boxed{156\ \text{tricks},\qquad 1{,}284\ \text{plays}.}
+\]
+\end{theorem}
+\begin{theorem}[Unrestricted cycles]\label{thm:other}
+The following states have the full standard inventory and lie directly
+on cycles, with $A$ leading in each case:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Initial split & Primitive tricks & Plays per period\\
+\midrule
+$38$--$14$ & $200$ & $1{,}264$\\
+$50$--$2$ & $176$ & $1{,}228$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The exact queues are
+\begin{verbatim}
+200 tricks:
+A: CCCCAQCACKJCCACCCCCJCCCCCACCJCCKCCCQCC
+B: CCQCKCCCQCKCJC
+
+176 tricks:
+A: CCKCCCQCCCCCCCCCCKCKQCQCKQCACAJCCACACCCJCCCCCCCCJC
+B: JC
+\end{verbatim}
+\end{theorem}
+
+The inventory and primitive periods in these theorems can be checked by
+ordinary forward simulation. The supplied program \texttt{verify.py}
+uses two structurally different simulations---a card-index implementation
+and a challenge-block implementation---and compares their results at every
+trick boundary. It also confirms that every boundary state within each
+reported period is distinct. This finite check is a reproducible proof of
+the two assertions, independent of the discovery procedure.
+
+\section{The protected $\J\C$ module}
+The balanced example has a more explanatory word certificate.
+
+\begin{lemma}[Protected concatenation]\label{lem:protected}
+Let $P$ contain no jacks. Start with the large queue $P\J*$ and the
+reservoir queue $\J\C$, the large player leading, where $*$ is a
+protected marker. Suppose ordinary play finishes a sequence of completed
+tricks without reading $*$ and reaches a boundary at which the reservoir
+again equals $\J\C$, the large player leads, and their queue is
+$*X\J\C$. Then the \emph{successor module} is $\C X$.
+These passages may be concatenated: replacing the protected marker by
+subsequent modules preserves the completed passage and its cost.
+\end{lemma}
+\begin{proof}
+Before reaching the protected marker, no card to its right can affect any
+payment or choice of next player. The trick sequence is therefore independent
+of the suffix hidden behind $*$. When the marker reaches the front, the
+remaining queue is $X\J\C$ behind it and the reservoir and leader have
+returned. In the concatenated deck, the protected suffix begins with the
+ordinary card $\C$ separating adjacent modules, giving the next piece
+$\C X$. Replacing $*$ by this suffix changes no earlier play.
+\end{proof}
+
+For Theorem~\ref{thm:balanced}, use the module and two fixed spacers
+\begin{verbatim}
+P = CCKCCCQCCCCQCKKCKQCAAQAA
+U = CC
+V = CCCCCCCCCCCCCCCCCCCC
+\end{verbatim}
+The module inventory is $\C^{12}\Q^4\K^4\AA^4$. At a convenient cycle
+phase, the small queue is $\J\C$, the large player leads, and the large
+queue is
+\[
+P\J\,U\J\,V\J\C.
+\]
+There are twelve distinct successive modules $P=P_0,P_1,\ldots,P_{11}$
+under Lemma~\ref{lem:protected}, returning to $P_{12}=P_0$. Each passage
+of $P_j$ takes exactly seven tricks and $59$ plays, and has the same
+winner word. The two spacers are fixed points with costs
+\[
+\begin{array}{c|cc}
+&\text{tricks}&\text{plays}\\\hline
+\C^2&2&6\\
+\C^{20}&4&42
+\end{array}.
+\]
+Thus every complete traversal of the three pieces uses thirteen tricks and
+$107$ plays, and twelve traversals give
+\[
+ 12(7+2+4)=156,\qquad 12(59+6+42)=1{,}284.
+\]
+
+At the anchor with the reservoir player named $A$, each thirteen-trick
+round has winner word
+\[
+\texttt{AAAABBBABAAAB}.
+\]
+It has least period thirteen: since thirteen is prime and this is a
+nonconstant word, there can be no shorter period. Hence any return of the
+full rank state must occur after a multiple of thirteen tricks. The
+protected module has twelve distinct successive phase words, and the
+complete rank state returns on the twelfth traversal. This proves
+primitivity without relying on a long unstructured trace.
+
+The two entry tricks of Theorem~\ref{thm:balanced} deliver the cyclic
+state occurring four tricks after the displayed protected-module anchor.
+The entry packets are of lengths $19$ and $3$, and both return conditions
+are checked directly by \texttt{verify.py}.
+
+\section{A general balanced-loader identity}
+The special load-bearing role of the long ordinary spacer has a general
+form. Here $R$ is a face rank demanding $r$ ordinary cards.
+
+\begin{lemma}[Two-trick balanced loader]\label{lem:loader}
+Suppose $r+2\le s\le26$ and a cyclic boundary has the reservoir player
+$S$ leading, with queues
+\[
+S=U\,\C R\C^r,\quad |S|=s,\qquad
+L=T\,\C^{53-2s}R\C^r,
+\]
+where $|U|=|T|=s-r-2$ and these suffixes fit the inventory.
+Then the balanced starting queues
+\[
+\boxed{
+S_0=\C^{27+r-s}RU,\qquad
+L_0=\C^{26-s}R\C^{r+1}T
+}
+\]
+with $S_0$ leading, reach the given boundary in two completed tricks. The
+first has $54+r-2s$ plays, the second $r+2$ plays.
+\end{lemma}
+\begin{proof}
+Both displayed initial hands have length $26$. Put $x=26-s$.
+The two leading ordinary prefixes have lengths $x+r+1$ and $x$.
+They are played alternately until $L$ exhausts its initial $x$
+ordinary cards. Player $S$ plays one further ordinary card, then $L$
+plays $R$; $S$ pays $r$ ordinary cards. Thus $L$ takes the
+packet $\C^{2x+1}R\C^r$, containing $2x+r+2=54+r-2s$ cards.
+Player $L$ now leads $\C$, and $S$ answers with $R$, which $L$
+pays by $r$ ordinary cards. Player $S$ takes the packet
+$\C R\C^r$ of length $r+2$. The unplayed suffix of $S_0$ is $U$;
+the unplayed suffix of $L_0$ is $T$, and its first collection has been
+appended after it. The resulting queues are therefore exactly
+$U\C R\C^r$ and $T\C^{2x+1}R\C^r$, with $S$ leading.
+\end{proof}
+
+For $R=\J$ and $s=18$, the two packets have lengths $19,3$, as in the
+balanced example. The lemma is conditional: the required cyclic boundary
+must first be found; a large spacer alone does not establish accessibility.
+
+\section{Complete inverse components}
+A cycle can have no balanced ancestor even if its periodic hand sizes are
+near balance. Given a boundary state after a completed trick, its preceding
+pile must be a suffix of the winner's queue. For every nonempty suffix
+and either possible previous leader, the challenge rules determine the
+sequence of players contributing its cards. Reinsert those contributions
+at the two queue fronts and accept the candidate precisely if one forward
+trick returns to the chosen boundary.
+
+\begin{proposition}[Computer-certified reverse components]
+Under the stated rank-state convention, the complete backward components
+of the three cycles have the following sizes:
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Cycle & States & Reconstructed edges & Balanced states & Maximum transient\\
+\midrule
+$156/1{,}284$ & $7{,}992$ & $7{,}992$ & $72$ & $5$\\
+$200/1{,}264$ & $6{,}352$ & $6{,}352$ & $0$ & --\\
+$176/1{,}228$ & $6{,}760$ & $6{,}760$ & $0$ & $6$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every balanced state in the first component enters after exactly two
+tricks. Neither unrestricted orbit can be reached from a balanced state.
+\end{proposition}
+
+The inverse procedure is exhaustive because every possible last trick is
+characterized by its collected suffix and previous leader. The verifier
+traverses all reconstructed predecessors until its work queue empties,
+checks all candidate edges by forward replay, and rejects incomplete
+payment or terminal predecessors. The stated sizes are thus reproducible
+exhaustive computer-assisted claims about these \emph{particular} components;
+they do not classify the components of all cycles. The absence of a balanced
+ancestor for the two unrestricted cycles is stronger than merely inspecting
+the hand sizes along their periodic orbits.
+
+\section{Scope, verification, and further questions}
+The constructions distinguish two different optimization problems:
+maximizing the eventual primitive period accessible from a balanced deal,
+and maximizing the primitive period over arbitrary nonempty splits. The
+examples provide lower bounds $156$ and $200$ respectively; their play
+periods have the opposite order. No global maximality is known here.
+
+The local certificates require only Python's standard library. From the
+repository root, run
+\begin{verbatim}
+python3 long_cycles/verify.py \
+  --json long_cycles/verification/long_cycle_checks.json
+\end{verbatim}
+The script verifies the three inventories, both direct simulators, every
+primitive state, all protected passages of the balanced module, and all
+backward components. The committed JSON is a compact report, not a
+replacement for regenerating the checks. The earlier six-trick results and
+the present work use the same chronological-pickup convention and rank
+state definition \cite{longshort}.
+
+Further targets include balanced-accessible cycles longer than $156$, and
+modules whose first-return map carries new coprime face- or ordinary-gap
+periods. Changing the reservoir rank or allowing the reservoir state to
+switch between passages offers other possibilities. The complete state
+space is finite, but the global longest primitive period remains open.
+
+\begin{thebibliography}{9}
+\bibitem{paulhus}
+M. M. Paulhus, \emph{Beggar My Neighbour},
+American Mathematical Monthly \textbf{106} (1999), 162--165.
+\href{https://doi.org/10.2307/2589054}{doi:10.2307/2589054}.
+\bibitem{casella}
+B. Casella, P. M. Anderson, M. Kleber, R. P. Mann, R. Nessler,
+W. Rucklidge, S. G. Williams, and N. Wu,
+\emph{A Non-Terminating Game of Beggar-My-Neighbor},
+American Mathematical Monthly \textbf{132} (2025), 978--994.
+\href{https://doi.org/10.1080/00029890.2025.2558484}{doi:10.1080/00029890.2025.2558484}.
+\bibitem{andorno}
+N. Andorno, G. Cernoia, S. Duiz, and A. Michelangeli,
+\emph{The Dynamical Landscape of Beggar-My-Neighbour: Ultra-long Matches,
+Loops, and Infinite Matches}, arXiv:2602.23406 (2026).
+\href{https://arxiv.org/abs/2602.23406}{arxiv:2602.23406}.
+\bibitem{longshort}
+C. D. Long, \emph{The Unique Shortest Rank-State Cycle in
+Beggar-My-Neighbour: Six Tricks and 38 Individual Plays},
+companion manuscript, 2026. \url{https://github.com/long-mathematics/beggar-my-neighbour-period}.
+\end{thebibliography}
+\end{document}
