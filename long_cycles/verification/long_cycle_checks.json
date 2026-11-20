@@ -1,0 +1,91 @@
+{
+  "balanced156": {
+    "complete_predecessor_component": {
+      "balanced": 72,
+      "balanced_entry_depths": [
+        2
+      ],
+      "edges": 7992,
+      "maximal_smaller_hand": 26,
+      "maximal_transient": 5,
+      "states": 7992
+    },
+    "cycle_plays": 1284,
+    "entry_pile_lengths": [
+      19,
+      3
+    ],
+    "primitive_tricks": 156,
+    "start": {
+      "A": "CCCCCCCCCCJCCCCCCCCQCKCKQK",
+      "B": "CCCCCCCCJCCKQCAAQAAJCCJCCC",
+      "leader": "A"
+    },
+    "transient_plays": 22,
+    "transient_tricks": 2
+  },
+  "conventions": "chronological pickup; winner leads; named rank queues",
+  "inventory": {
+    "A": 4,
+    "C": 36,
+    "J": 4,
+    "K": 4,
+    "Q": 4
+  },
+  "protected_module": {
+    "phases": 12,
+    "piece": "CCKCCCQCCCCQCKKCKQCAAQAA",
+    "plays_per_pass": 59,
+    "round_tricks": 13,
+    "round_winner_word": "AAAABBBABAAAB",
+    "spacers": {
+      "C2": {
+        "plays": 6,
+        "tricks": 2
+      },
+      "C20": {
+        "plays": 42,
+        "tricks": 4
+      }
+    },
+    "tricks_per_pass": 7
+  },
+  "unrestricted176": {
+    "complete_predecessor_component": {
+      "balanced": 0,
+      "balanced_entry_depths": [],
+      "edges": 6760,
+      "maximal_smaller_hand": 24,
+      "maximal_transient": 6,
+      "states": 6760
+    },
+    "cycle_plays": 1228,
+    "primitive_tricks": 176,
+    "start": {
+      "A": "CCKCCCQCCCCCCCCCCKCKQCQCKQCACAJCCACACCCJCCCCCCCCJC",
+      "B": "JC",
+      "leader": "A"
+    },
+    "transient_plays": 0,
+    "transient_tricks": 0
+  },
+  "unrestricted200": {
+    "complete_predecessor_component": {
+      "balanced": 0,
+      "balanced_entry_depths": [],
+      "edges": 6352,
+      "maximal_smaller_hand": 24,
+      "maximal_transient": 6,
+      "states": 6352
+    },
+    "cycle_plays": 1264,
+    "primitive_tricks": 200,
+    "start": {
+      "A": "CCCCAQCACKJCCACCCCCJCCCCCACCJCCKCCCQCC",
+      "B": "CCQCKCCCQCKCJC",
+      "leader": "A"
+    },
+    "transient_plays": 0,
+    "transient_tricks": 0
+  }
+}
