@@ -31,9 +31,9 @@ The compact committed report is
 [verification/long_cycle_checks.json](verification/long_cycle_checks.json).
 To regenerate it exactly:
 
-``
+```
 python3 long_cycles/verify.py --json long_cycles/verification/long_cycle_checks.json
-``
+```
 
 The full 200- and 176-trick cycles have no 26–26 ancestors in their complete
 backward components. This does not exclude longer cycles accessible from
