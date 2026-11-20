@@ -13,6 +13,25 @@ modular-arithmetic proof.
 
 **Paper:** [minimum_period.pdf](minimum_period.pdf) · [LaTeX source](minimum_period.tex)
 
+## Companion paper: long periodic games
+
+A separate manuscript, [**Long Periodic Games of Beggar-My-Neighbour:
+Balanced Deals and Protected Queue Modules**](long_cycles/long_cycles.tex),
+gives explicit long-cycle witnesses and a reproducible protected-module proof.
+[Supporting scripts and certificates](long_cycles/README.md) are independent
+of the minimum-period classification.
+
+* An explicit **26–26** deal enters a **156-trick / 1,284-play** primitive cycle
+  after two tricks (22 plays).
+* An unrestricted **38–14** state has a **200-trick / 1,264-play** cycle.
+  A 50–2 state gives a separate **176-trick / 1,228-play** example.
+* Complete inverse components have respectively 72, 0, and 0 balanced
+  ancestors. The 156-cycle has twelve protected module phases.
+
+These are **lower bounds**, not claims of globally longest possible cycles.
+Build with `make paper-long`, verify with `make verify-long-cycles`, or
+download the compiled long-cycle paper from the GitHub Actions build artifact.
+
 ## Exact witness
 
 `C` means any ordinary card; J, Q, K, A have penalties 1, 2, 3, 4.
