@@ -1,9 +1,14 @@
 PYTHON ?= python3
 WORKERS ?= 2
 
-.PHONY: paper verify-native verify-all classify-six crosscheck-six verify-plays crosscheck-plays verify-play-queries verify-algebraic clean
+.PHONY: paper paper-long papers verify-long-cycles verify-native verify-all classify-six crosscheck-six verify-plays crosscheck-plays verify-play-queries verify-algebraic clean
 paper:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error minimum_period.tex
+paper-long:
+	cd long_cycles && latexmk -pdf -interaction=nonstopmode -halt-on-error long_cycles.tex
+papers: paper paper-long
+verify-long-cycles:
+	$(PYTHON) long_cycles/verify.py --json long_cycles/verification/long_cycle_checks.json
 verify-native:
 	python3 native_z3_check.py --json verification/native_z3_fresh.json
 	python3 backward_component.py --json verification/backward_fresh.json
